@@ -12,11 +12,12 @@
         :root {
             --primary: #00f2ff; /* Cyan Neon */
             --secondary: #bc13fe; /* Purple Neon */
-            --bg-dark: #0a0a0a;
-            --bg-card: #161616;
+            --bg-dark: #050505;
             --text-main: #ffffff;
             --text-muted: #a0a0a0;
-            --transition: all 0.3s ease;
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy 3D feel */
         }
 
         /* --- GLOBAL RESET --- */
@@ -32,9 +33,20 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             overflow-x: hidden;
+            /* Deep Space Background */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(188, 19, 254, 0.08), transparent 25%), 
+                radial-gradient(circle at 85% 30%, rgba(0, 242, 255, 0.08), transparent 25%);
         }
 
-        /* --- NAVIGATION --- */
+        /* --- 3D FLOATING ANIMATION --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- NAVIGATION (Glass Effect) --- */
         nav {
             display: flex;
             justify-content: space-between;
@@ -42,10 +54,12 @@
             padding: 20px 5%;
             position: fixed;
             width: 100%;
-            background: rgba(10, 10, 10, 0.95);
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            /* Frosted Glass */
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .logo {
@@ -54,16 +68,12 @@
             letter-spacing: 2px;
             color: var(--text-main);
             text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
         }
 
-        .logo span {
-            color: var(--primary);
-        }
+        .logo span { color: var(--primary); }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
+        .nav-links { display: flex; gap: 30px; }
 
         .nav-links a {
             text-decoration: none;
@@ -75,6 +85,7 @@
 
         .nav-links a:hover {
             color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
         }
 
         /* Mobile Menu Toggle */
@@ -85,7 +96,7 @@
             color: var(--text-main);
         }
 
-        /* --- HERO SECTION (CLASSIC GRADIENT ANIMATION) --- */
+        /* --- HERO SECTION --- */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -94,21 +105,12 @@
             align-items: center;
             text-align: center;
             padding: 120px 20px 40px 20px;
-            /* Animated Gradient Background */
-            background: linear-gradient(-45deg, #0a0a0a, #1a0b2e, #0f1c2e, #000000);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         .profile-img-container {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             position: relative;
+            animation: float 6s ease-in-out infinite;
         }
 
         .profile-img {
@@ -116,27 +118,25 @@
             height: 200px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--primary);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
-            transition: var(--transition);
-        }
-
-        .profile-img:hover {
-            transform: scale(1.05);
-            border-color: var(--secondary);
-            box-shadow: 0 0 50px rgba(188, 19, 254, 0.4);
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 
+                0 0 0 4px rgba(0, 242, 255, 0.1),
+                0 20px 50px rgba(0,0,0,0.8),
+                inset 0 0 20px rgba(0,0,0,0.5); 
         }
 
         .hero h1 {
             font-size: 4rem;
             margin-bottom: 20px;
             line-height: 1.1;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .gradient-text {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 800;
         }
 
         .bio-text {
@@ -153,12 +153,14 @@
             margin-bottom: 20px;
             min-height: 1.5em;
             font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.4);
         }
 
+        /* --- 3D BUTTONS --- */
         .btn {
-            padding: 12px 30px;
-            background: transparent;
-            border: 2px solid var(--primary);
+            padding: 14px 35px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--primary);
             color: var(--primary);
             font-weight: bold;
             text-decoration: none;
@@ -166,31 +168,33 @@
             transition: var(--transition);
             margin: 10px;
             display: inline-block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 242, 255, 0.2);
             background: var(--primary);
-            color: var(--bg-dark);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
-            transform: translateY(-2px);
+            color: #000;
         }
 
         .btn-fill {
-            background: var(--secondary);
-            border-color: var(--secondary);
+            background: linear-gradient(45deg, var(--secondary), #9d00ff);
+            border: none;
             color: white;
+            box-shadow: 0 10px 20px rgba(188, 19, 254, 0.3);
         }
 
         .btn-fill:hover {
-            background: transparent;
-            color: var(--secondary);
-            box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+            box-shadow: 0 15px 40px rgba(188, 19, 254, 0.5);
+            color: white;
         }
 
         /* --- SKILLS SECTION --- */
         .skills-section {
             padding: 80px 5%;
-            background: #0f0f0f;
         }
 
         .section-title {
@@ -198,82 +202,108 @@
             font-size: 2.5rem;
             margin-bottom: 60px;
             position: relative;
+            text-shadow: 0 5px 10px rgba(0,0,0,0.5);
         }
 
         .section-title::after {
             content: '';
             display: block;
-            width: 60px;
+            width: 80px;
             height: 4px;
-            background: var(--primary);
-            margin: 10px auto 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            margin: 15px auto 0;
             border-radius: 2px;
+            box-shadow: 0 0 15px var(--primary);
         }
 
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 20px;
+            gap: 25px;
             max-width: 1000px;
             margin: 0 auto;
         }
 
+        /* --- 3D GLASS CARDS FOR LOGOS --- */
         .skill-card {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 10px;
+            background: var(--card-glass);
+            padding: 30px 20px;
+            border-radius: 20px;
             text-align: center;
-            border: 1px solid #333;
+            /* Glass Borders */
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            /* Deep Shadow */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
             transition: var(--transition);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            height: 180px; /* Uniform height */
         }
 
         .skill-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 242, 255, 0.1);
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            border-top: 1px solid var(--primary);
+            background: rgba(255,255,255,0.08);
         }
 
-        .skill-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+        /* Style for the Original Logos */
+        .skill-img {
+            height: 70px;
+            width: auto;
+            margin-bottom: 20px;
+            /* This gives the logos a 3D "Pop" off the glass */
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+            transition: var(--transition);
         }
 
-        /* --- PORTFOLIO (VIDEO PROJECTS) --- */
-        .portfolio {
-            padding: 100px 5%;
+        .skill-card:hover .skill-img {
+            transform: scale(1.1);
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.6));
         }
+
+        .skill-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- PORTFOLIO --- */
+        .portfolio { padding: 100px 5%; }
 
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
+            gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .portfolio-item {
             position: relative;
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            border: 1px solid #333;
-            background: var(--bg-card);
+            background: #111;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             transition: var(--transition);
         }
 
         .portfolio-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            border-top: 1px solid var(--primary);
         }
 
         .thumb-container {
             position: relative;
             width: 100%;
-            height: 200px;
+            height: 220px;
             overflow: hidden;
         }
 
@@ -281,7 +311,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s ease;
         }
 
         .portfolio-item:hover .thumb-container img {
@@ -299,42 +329,44 @@
             justify-content: center;
             align-items: center;
             opacity: 0;
+            backdrop-filter: blur(2px);
             transition: var(--transition);
         }
 
-        .portfolio-item:hover .play-overlay {
-            opacity: 1;
-        }
+        .portfolio-item:hover .play-overlay { opacity: 1; }
 
         .play-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: white;
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.8));
+            transform: scale(0.8);
+            transition: var(--transition);
         }
 
-        .portfolio-info {
-            padding: 20px;
-        }
+        .portfolio-item:hover .play-icon { transform: scale(1); }
+
+        .portfolio-info { padding: 25px; }
 
         .portfolio-info h3 {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-            line-height: 1.4;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
         }
 
         .portfolio-info p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .platform-tag {
             display: inline-block;
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 4px;
             font-size: 0.75rem;
             font-weight: bold;
             text-transform: uppercase;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .tag-yt { background: #ff0000; color: white; }
@@ -343,29 +375,25 @@
         .watch-btn {
             display: inline-block;
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
             background: #222;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-weight: 600;
             transition: var(--transition);
-            border: 1px solid #444;
+            border: 1px solid #333;
         }
 
         .watch-btn:hover {
             background: var(--primary);
             color: #000;
-            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
         }
 
         /* --- CONTACT SECTION --- */
-        .contact {
-            padding: 80px 5%;
-            text-align: center;
-            background: #0f0f0f;
-        }
+        .contact { padding: 80px 5%; }
 
         .contact-content {
             display: grid;
@@ -373,14 +401,15 @@
             gap: 40px;
             max-width: 1000px;
             margin: 0 auto;
-            text-align: left;
         }
 
-        .contact-info {
-            background: var(--bg-card);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #333;
+        .contact-info, .contact-form {
+            background: #111;
+            padding: 40px;
+            border-radius: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         .contact-item {
@@ -388,30 +417,24 @@
             align-items: center;
             margin-bottom: 25px;
             font-size: 1.1rem;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateX(5px);
         }
 
         .contact-item i {
             color: var(--primary);
             font-size: 1.5rem;
             margin-right: 15px;
-            width: 30px;
         }
 
-        .contact-item a {
-            color: var(--text-main);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .contact-item a:hover {
-            color: var(--secondary);
-        }
-
-        .social-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
+        .social-buttons { display: flex; gap: 15px; margin-top: 30px; }
 
         .social-btn {
             display: flex;
@@ -424,47 +447,48 @@
             color: white;
             text-decoration: none;
             transition: var(--transition);
-            border: 1px solid #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .social-btn:hover {
             background: var(--primary);
             color: black;
             transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--primary);
         }
 
         .contact-form input, .contact-form textarea {
             width: 100%;
             padding: 15px;
             margin-bottom: 15px;
-            background: #222;
-            border: 1px solid #333;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             color: white;
-            border-radius: 5px;
+            border-radius: 8px;
+            transition: var(--transition);
         }
         
-        .contact-form textarea {
-            height: 120px;
-            resize: none;
-        }
+        .contact-form textarea { height: 120px; resize: none; }
 
         .contact-form input:focus, .contact-form textarea:focus {
             outline: none;
             border-color: var(--secondary);
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.2);
         }
 
         footer {
-            padding: 30px;
+            padding: 40px;
             text-align: center;
-            border-top: 1px solid #222;
+            border-top: 1px solid rgba(255,255,255,0.1);
             color: var(--text-muted);
             font-size: 0.9rem;
+            background: #050505;
         }
 
         /* --- MEDIA QUERIES --- */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
-            
             .menu-toggle { display: block; }
             
             .nav-links {
@@ -480,10 +504,7 @@
                 border-bottom: 1px solid rgba(255,255,255,0.1);
             }
 
-            .nav-links.active {
-                display: flex;
-            }
-            
+            .nav-links.active { display: flex; }
             .contact-content { grid-template-columns: 1fr; }
         }
     </style>
@@ -504,21 +525,21 @@
     </nav>
 
     <section id="hero" class="hero" data-aos="fade-in">
-        <div class="profile-img-container" data-aos="zoom-in" data-aos-delay="200">
+        <div class="profile-img-container">
             <img src="https://i.ibb.co/wZfH6Pmk/Whats-App-Image-2025-12-18-at-12-50-45-PM.jpg" alt="Anup Kumar" class="profile-img">
         </div>
 
-        <h1 data-aos="fade-up" data-aos-delay="400">Hi, I'm <span class="gradient-text">Anup Kumar</span></h1>
+        <h1 data-aos="fade-up" data-aos-delay="200">Hi, I'm <span class="gradient-text">Anup Kumar</span></h1>
         
-        <div class="typing-container" data-aos="fade-up" data-aos-delay="600">
+        <div class="typing-container" data-aos="fade-up" data-aos-delay="400">
             I am <span id="typing-text"></span>
         </div>
 
-        <p class="bio-text" data-aos="fade-up" data-aos-delay="800">
+        <p class="bio-text" data-aos="fade-up" data-aos-delay="600">
             I am a multidisciplinary creative professional bridging the gap between artistic vision and technical precision. With expertise in high-end video production using <strong>Adobe Premiere Pro & After Effects</strong>, I also leverage <strong>LLMs and Python</strong> to automate workflows.
         </p>
 
-        <div class="cta-group" data-aos="fade-up" data-aos-delay="1000">
+        <div class="cta-group" data-aos="fade-up" data-aos-delay="800">
             <a href="#portfolio" class="btn btn-fill">See My Work</a>
             <a href="#contact" class="btn">Hire Me</a>
         </div>
@@ -529,37 +550,45 @@
         <div class="skills-grid">
             
             <div class="skill-card" data-aos="fade-up" data-aos-delay="100">
-                <i class="fas fa-film skill-icon" style="color: #9999ff;"></i>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere Pro" class="skill-img">
                 <span class="skill-name">Premiere Pro</span>
             </div>
+            
             <div class="skill-card" data-aos="fade-up" data-aos-delay="200">
-                <i class="fas fa-photo-film skill-icon" style="color: #d8a4ff;"></i>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects" class="skill-img">
                 <span class="skill-name">After Effects</span>
             </div>
+            
             <div class="skill-card" data-aos="fade-up" data-aos-delay="300">
-                <i class="fas fa-palette skill-icon" style="color: #00c4cc;"></i>
+                <img src="https://www.vectorlogo.zone/logos/canva/canva-icon.svg" alt="Canva" class="skill-img">
                 <span class="skill-name">Canva</span>
             </div>
+            
             <div class="skill-card" data-aos="fade-up" data-aos-delay="400">
-                <i class="fa-brands fa-python skill-icon" style="color: #3776AB;"></i>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python" class="skill-img">
                 <span class="skill-name">Python</span>
             </div>
+            
             <div class="skill-card" data-aos="fade-up" data-aos-delay="500">
-                <i class="fa-brands fa-html5 skill-icon" style="color: #e34c26;"></i>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML" class="skill-img">
                 <span class="skill-name">HTML</span>
             </div>
+            
             <div class="skill-card" data-aos="fade-up" data-aos-delay="600">
-                <i class="fas fa-database skill-icon" style="color: #f29111;"></i>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Sql_data_base_with_logo.png" alt="SQL" class="skill-img">
                 <span class="skill-name">SQL</span>
             </div>
+            
             <div class="skill-card" data-aos="fade-up" data-aos-delay="700">
-                <i class="fas fa-robot skill-icon" style="color: #00ff9d;"></i>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="Gen AI" class="skill-img" style="filter: invert(1);"> 
                 <span class="skill-name">LLM / GenAI</span>
             </div>
+            
             <div class="skill-card" data-aos="fade-up" data-aos-delay="800">
-                <i class="fas fa-file-excel skill-icon" style="color: #1D6F42;"></i>
+                <img src="https://img.icons8.com/color/96/microsoft-excel-2019--v1.png" alt="Excel" class="skill-img">
                 <span class="skill-name">Excel</span>
             </div>
+
         </div>
     </section>
 
@@ -635,7 +664,7 @@
         </div>
     </section>
 
-    <section id="contact" class="contact" data-aos="fade-in">
+    <section id="contact" class="contact" data-aos="fade-up">
         <h2 class="section-title">Let's Connect</h2>
         <div class="contact-content">
             <div class="contact-info" data-aos="fade-right">
@@ -677,8 +706,9 @@
     <script>
         // Initialize AOS
         AOS.init({
-            duration: 1000, /* Speed of animation */
-            once: true,     /* Only animate once while scrolling down */
+            duration: 1000, 
+            offset: 100,
+            once: true,
         });
 
         // TYPING EFFECT
